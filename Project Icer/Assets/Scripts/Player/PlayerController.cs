@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour
 
 
         move = Vector3.ProjectOnPlane(move, GroundNormal);
+
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
     #endregion METHODS_UPDATE
@@ -129,6 +131,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit hitInfo;
         Vector3 newpos = transform.position + (move * TargetVelocity * Time.deltaTime);
 
+        float fallingy = 0;
 
         // Test cast in movement direction
         if (Physics.CapsuleCast(
@@ -147,7 +150,7 @@ public class PlayerController : MonoBehaviour
 
             // If falling, 
             if (!Grounded)
-                newpos.y -= Time.deltaTime * Gravity;
+                fallingy -= Time.deltaTime * Gravity;
 
             // Test cast down from newpos
             if (Physics.Raycast(
@@ -177,7 +180,7 @@ public class PlayerController : MonoBehaviour
             print("Nothing Ahead.");
             // If falling, 
             if (!Grounded)
-                newpos.y -= Time.deltaTime * Gravity;
+                fallingy -= Time.deltaTime * Gravity;
 
             // Test cast down from newpos
             if (Physics.CapsuleCast(
@@ -186,7 +189,7 @@ public class PlayerController : MonoBehaviour
                 COMP_CapsuleCollider.radius,
                 Vector3.down,
                 out hitInfo,
-                COMP_CapsuleCollider.height + GroundStepLength + newpos.y,
+                COMP_CapsuleCollider.height * 0.5f + fallingy,
                 LayerMask_MovementChecking,
                 QueryTriggerInteraction.UseGlobal))
                 //Physics.Raycast(
@@ -209,7 +212,9 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                print("COMP_CapsuleCollider.height + GroundStepLength + fallingy: " + (COMP_CapsuleCollider.height + GroundStepLength + fallingy));
                 Grounded = false;
+                newpos.y += fallingy;
                 print("Falling");
             }
         }
