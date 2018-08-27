@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3fb9f5892fa08a428a830a5d8bf235d, type: 3}
+  m_Name: NMG_AmmoReservee
+  m_EditorClassIdentifier: 
+  AmmoName: Nitrogen Rounds
+  AmmoOfWeaponType: 0
+  Prefab_Bullet: {fileID: 1846944081307942, guid: 0a1df449586ea4c4b83e1f8b546b53b6,
+    type: 2}
+  MaxAmmoReservable: 200
+  CurrentAmmoReserved: 8800
+  MaxClipSize: 50
+  AmmoInClip: 24
+  FiringCost: 1
+  FireRate: 0.05
+  ReloadTime: 1
+  Inaccuracy: 1
+  AmmoAestheticalColor: {r: 0, g: 0.78431374, b: 1, a: 1}
+  InfiniteAmmo: 0

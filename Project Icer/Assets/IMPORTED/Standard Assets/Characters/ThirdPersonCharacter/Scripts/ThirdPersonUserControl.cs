@@ -64,7 +64,7 @@ public class ThirdPersonUserControl : MonoBehaviour
         }
 #if !MOBILE_INPUT
 		// walk speed multiplier
-	    if (Input.GetKey(KeyCode.LeftShift)) MoveDir *= 0.5f;
+	    if (!Input.GetKey(KeyCode.LeftShift)) MoveDir *= 0.5f;
 #endif
 
         // pass all parameters to the character control script

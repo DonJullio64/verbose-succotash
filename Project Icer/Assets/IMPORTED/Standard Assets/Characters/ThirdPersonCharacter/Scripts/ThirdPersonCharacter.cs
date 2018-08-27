@@ -1,4 +1,5 @@
 using UnityEngine;
+using IceEvents.Weapons;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
@@ -10,9 +11,13 @@ public class ThirdPersonCharacter : MonoBehaviour
 	[SerializeField] float m_JumpPower = 12f;
 	[Range(1f, 4f)][SerializeField] float m_GravityMultiplier = 2f;
 	[SerializeField] float m_RunCycleLegOffset = 0.2f; //specific to the character in sample assets, will need to be modified to work with others
-	[SerializeField] float m_MoveSpeedMultiplier = 1f;
-	[SerializeField] float m_AnimSpeedMultiplier = 1f;
+	[SerializeField] float m_MoveSpeedMultiplier_Walking = 1f;
+    [SerializeField] float m_MoveSpeedMultiplier_Running = 1f;
+    [SerializeField] float m_MoveSpeedMultiplier_Aiming = 1f;
+    [SerializeField] float m_AnimSpeedMultiplier = 1f;
 	[SerializeField] float m_GroundCheckDistance = 0.1f;
+    [SerializeField] LayerMask LayerMask_CrouchCheck;
+    float CurrentMoveSpeedModifier;
 	bool IsGrounded;
 	float m_OrigGroundCheckDistance;
 	const float k_Half = 0.5f;
@@ -22,6 +27,7 @@ public class ThirdPersonCharacter : MonoBehaviour
 	float m_CapsuleHeight;
 	Vector3 m_CapsuleCenter;
 	bool m_Crouching;
+    bool m_Aiming;
 
     Vector3 LastMoveDirection;
     [SerializeField] private float VelocityProgression;
@@ -31,6 +37,13 @@ public class ThirdPersonCharacter : MonoBehaviour
     CapsuleCollider COMP_CapsuleCollider;
     Animator COMP_Animator;
 
+    private void Awake()
+    {
+        EventMGR.STATIC_EventMGR.SubscribeToEvent(typeof(Ice_DownWeaponState), OnDownWeaponState);
+        EventMGR.STATIC_EventMGR.SubscribeToEvent(typeof(Ice_AimingWeaponState), OnAimingWeaponState);
+
+        CurrentMoveSpeedModifier = m_MoveSpeedMultiplier_Walking;
+    }
 
     void Start()
 	{
@@ -99,7 +112,7 @@ public class ThirdPersonCharacter : MonoBehaviour
 		{
 			Ray crouchRay = new Ray(COMP_Rigidbody.position + Vector3.up * COMP_CapsuleCollider.radius * k_Half, Vector3.up);
 			float crouchRayLength = m_CapsuleHeight - COMP_CapsuleCollider.radius * k_Half;
-			if (Physics.SphereCast(crouchRay, COMP_CapsuleCollider.radius * k_Half, crouchRayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+			if (Physics.SphereCast(crouchRay, COMP_CapsuleCollider.radius * k_Half, crouchRayLength, LayerMask_CrouchCheck, QueryTriggerInteraction.Ignore))
 			{
 				m_Crouching = true;
 				return;
@@ -117,7 +130,7 @@ public class ThirdPersonCharacter : MonoBehaviour
 		{
 			Ray crouchRay = new Ray(COMP_Rigidbody.position + Vector3.up * COMP_CapsuleCollider.radius * k_Half, Vector3.up);
 			float crouchRayLength = m_CapsuleHeight - COMP_CapsuleCollider.radius * k_Half;
-			if (Physics.SphereCast(crouchRay, COMP_CapsuleCollider.radius * k_Half, crouchRayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+			if (Physics.SphereCast(crouchRay, COMP_CapsuleCollider.radius * k_Half, crouchRayLength, LayerMask_CrouchCheck, QueryTriggerInteraction.Ignore))
 			{
 				m_Crouching = true;
 			}
@@ -190,6 +203,12 @@ public class ThirdPersonCharacter : MonoBehaviour
 
 	void ApplyExtraTurnRotation()
 	{
+        if (m_Aiming)
+        {
+            transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation(Vector3.Scale(CameraController.STATIC_CameraController.MainCamera.transform.forward, new Vector3(1, 0, 0))), 0.5f );
+            return;
+        }
+
 		// help the character turn faster (this is in addition to root rotation in the animation)
 		float turnSpeed = Mathf.Lerp(m_StationaryTurnSpeed, m_MovingTurnSpeed, m_ForwardAmount);
 		transform.Rotate(0, m_TurnAmount * turnSpeed * Time.deltaTime, 0);
@@ -198,11 +217,15 @@ public class ThirdPersonCharacter : MonoBehaviour
 
 	public void OnAnimatorMove()
 	{
+        if (Input.GetKey(KeyCode.LeftShift) && !m_Aiming)
+            CurrentMoveSpeedModifier = m_MoveSpeedMultiplier_Running;
+        else
+            CurrentMoveSpeedModifier = m_MoveSpeedMultiplier_Walking;
 		// we implement this function to override the default root motion.
 		// this allows us to modify the positional speed before it's applied.
 		if (IsGrounded && Time.deltaTime > 0)
 		{
-            Vector3 v = LastMoveDirection * m_MoveSpeedMultiplier * VelocityProgression;//(COMP_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
+            Vector3 v = LastMoveDirection * CurrentMoveSpeedModifier * VelocityProgression;//(COMP_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
 
             // we preserve the existing y part of the current velocity.
             v.y = COMP_Rigidbody.velocity.y;
@@ -233,5 +256,30 @@ public class ThirdPersonCharacter : MonoBehaviour
 			//COMP_Animator.applyRootMotion = false;
 		}
 	}
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
+    #region METHODS_EVENTS
+
+    private void OnDownWeaponState(IceEvent_BASE i)
+    {
+        CurrentMoveSpeedModifier = m_MoveSpeedMultiplier_Walking;
+        m_Aiming = false;
+    }
+    private void OnAimingWeaponState(IceEvent_BASE i)
+    {
+        CurrentMoveSpeedModifier = m_MoveSpeedMultiplier_Aiming;
+        m_Aiming = true;
+    }
+
+
+    #endregion METHODS_EVENTS
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
 }
 

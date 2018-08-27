@@ -165,7 +165,11 @@ public class Health : MonoBehaviour
 
     public void Kill()
     {
-        //print("ENTITY HAS DIED: " + name);
+        print("ENTITY HAS DIED: " + name);
+
+        // If no Death Functions, just destroy the object
+        if (DeathFunctionArrayList.Count == 0)
+            Destroy(gameObject);
 
         foreach (DeathFunction dfunc in DeathFunctionArrayList)
         {

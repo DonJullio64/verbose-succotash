@@ -11,7 +11,7 @@ public class EventMGR : MonoBehaviour
     private Dictionary<Type, HashSet<EventCallback> > EventDictionary;
     private static EventMGR EventManager;
 
-    public delegate void EventCallback(BASE_Event baseevent);
+    public delegate void EventCallback(IceEvent_BASE baseevent);
     EventCallback CallbackFunctions;
 
     #endregion VARIABLES
@@ -96,7 +96,7 @@ public class EventMGR : MonoBehaviour
         }
     }
 
-    public void DispatchEvent(Type eventType, BASE_Event baseevent)
+    public void DispatchEvent(Type eventType, IceEvent_BASE baseevent)
     {
         print("Triggering Event of Type: " + eventType);
         HashSet<EventCallback> thisEvent = null;

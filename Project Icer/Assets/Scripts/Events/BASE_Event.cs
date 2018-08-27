@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BASE_Event
+public class IceEvent_BASE
 {
     #region VARIABLES
 
