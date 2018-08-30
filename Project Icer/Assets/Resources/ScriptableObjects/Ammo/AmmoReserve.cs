@@ -8,6 +8,7 @@ public class AmmoReserve : ScriptableObject
     public string AmmoName;
     public Weapon_BASE.WeaponType AmmoOfWeaponType;
     public GameObject Prefab_Bullet;
+    public GameObject Prefab_Shell;
 
     public int MaxAmmoReservable;
     public int CurrentAmmoReserved;

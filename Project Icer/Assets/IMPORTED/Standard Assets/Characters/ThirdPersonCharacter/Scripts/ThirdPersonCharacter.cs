@@ -205,7 +205,7 @@ public class ThirdPersonCharacter : MonoBehaviour
 	{
         if (m_Aiming)
         {
-            transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation(Vector3.Scale(CameraController.STATIC_CameraController.MainCamera.transform.forward, new Vector3(1, 0, 0))), 0.5f );
+            transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation(Vector3.Scale(CameraController.STATIC_CameraController.MainCamera.transform.forward, new Vector3(1, 0, 1))), 0.5f );
             return;
         }
 

@@ -6,6 +6,7 @@ public class HurtBox : MonoBehaviour
 {
     #region VARIABLES
 
+    public float DamageScalar = 1f;
     Health COMP_Health_Owner;
 
     #endregion VARIABLES
@@ -41,7 +42,7 @@ public class HurtBox : MonoBehaviour
 
     public void DamageHurtBox(float damage)
     {
-        COMP_Health_Owner.TakeDamage(damage);
+        COMP_Health_Owner.TakeDamage(damage * DamageScalar);
     }
 
     #endregion METHODS_SPECIFICS

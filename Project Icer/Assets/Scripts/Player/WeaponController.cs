@@ -23,6 +23,8 @@ public class WeaponController : MonoBehaviour
 
     public GameObject FiringTip;
     Animator Animator_FiringTip;
+    public GameObject ShellEjector;
+    public Animator Animator_WeaponModel;
     ParticleSystem ParticleSystem_FiringTip;
 
     // FiringLock
@@ -141,6 +143,7 @@ public class WeaponController : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             ResolveAiming();
+            Animator_WeaponModel.SetTrigger("Raise");
         }
     }
     private void ResolveDown()
@@ -148,6 +151,7 @@ public class WeaponController : MonoBehaviour
         CurrentWeaponState = WeaponStates.Down;
         EventMGR.STATIC_EventMGR.DispatchEvent(typeof(Ice_DownWeaponState), new Ice_DownWeaponState());
 
+        Animator_WeaponModel.SetTrigger("Lower");
     }
 
     private void CheckAimingState()
@@ -169,6 +173,7 @@ public class WeaponController : MonoBehaviour
     {
         CurrentWeaponState = WeaponStates.Aiming;
         EventMGR.STATIC_EventMGR.DispatchEvent(typeof(Ice_AimingWeaponState), new Ice_AimingWeaponState());
+
 
     }
 
@@ -210,12 +215,24 @@ public class WeaponController : MonoBehaviour
         EventMGR.STATIC_EventMGR.DispatchEvent(typeof(Ice_FiringWeaponState), new Ice_FiringWeaponState());
 
         Vector3 dir = FiringTip.transform.forward;
+
+#if UNITY_EDITOR
+        // helper to visualise the ground check ray in the scene view
+        Debug.DrawLine(FiringTip.transform.position, FiringTip.transform.position + dir, Color.black);
+#endif
+
         float angle = CurrentWeapon.Reserve.Inaccuracy;
         dir = Quaternion.AngleAxis(Random.Range(-angle, angle), FiringTip.transform.up) * dir;
         dir = Quaternion.AngleAxis(Random.Range(-angle, angle), FiringTip.transform.right) * dir;
 
-        GameObject bullet = Instantiate(Prefab_CurrentBullet, FiringTip.transform.position, FiringTip.transform.rotation);
+        print("dir: " + dir);
+        GameObject bullet = Instantiate(Prefab_CurrentBullet, FiringTip.transform.position, Quaternion.identity);
         bullet.GetComponent<Bullet_BASE>().InitializeDirection(dir);
+
+        GameObject shell = Instantiate(CurrentWeapon.Reserve.Prefab_Shell, ShellEjector.transform.position, FiringTip.transform.rotation);
+        shell.GetComponent<Rigidbody>().AddForce(ShellEjector.transform.forward * Random.Range(2, 5), ForceMode.Impulse);
+
+        Animator_WeaponModel.SetTrigger("Fire");
     }
 
 

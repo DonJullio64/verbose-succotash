@@ -15,10 +15,12 @@ MonoBehaviour:
   AmmoOfWeaponType: 0
   Prefab_Bullet: {fileID: 1846944081307942, guid: 0a1df449586ea4c4b83e1f8b546b53b6,
     type: 2}
+  Prefab_Shell: {fileID: 1256358420437370, guid: 1612aaae5e753194c878a907df73eaf5,
+    type: 2}
   MaxAmmoReservable: 200
-  CurrentAmmoReserved: 8800
+  CurrentAmmoReserved: 8400
   MaxClipSize: 50
-  AmmoInClip: 24
+  AmmoInClip: 50
   FiringCost: 1
   FireRate: 0.05
   ReloadTime: 1
