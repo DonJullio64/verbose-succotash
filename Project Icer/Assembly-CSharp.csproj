@@ -287,6 +287,7 @@
     <Compile Include="Assets\Scripts\Events\BASE_Event.cs" />
     <Compile Include="Assets\Scripts\Events\CustomEvents.cs" />
     <Compile Include="Assets\Scripts\Events\EventMGR.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\EnemyHealth.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Health.cs" />
     <Compile Include="Assets\Scripts\Gameplay\HurtBox.cs" />
     <Compile Include="Assets\Scripts\Gameplay\PlayerHealth.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="Assets\Scripts\Utilities\DisableMeshRenderer.cs" />
     <Compile Include="Assets\Scripts\Utilities\IceUtils.cs" />
     <Compile Include="Assets\Scripts\Utilities\LerpFollower.cs" />
+    <Compile Include="Assets\Scripts\Utilities\NoiseEffector.cs" />
     <Compile Include="Assets\Scripts\Utilities\TimedDeath.cs" />
     <Compile Include="Assets\Scripts\Weapons\Bullet_BASE.cs" />
     <Compile Include="Assets\Scripts\Weapons\Weapon_BASE.cs" />

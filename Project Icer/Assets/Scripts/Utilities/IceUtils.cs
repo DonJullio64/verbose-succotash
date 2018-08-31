@@ -71,3 +71,32 @@ public struct AnimationCurveProgresser
         Progression -= Time.deltaTime * RecessionScalar;
     }
 }
+
+[System.Serializable]
+public struct Range_Unanchored
+{
+    public float Min;
+    public float Max;
+    public float Difference;
+    public float RangeUnit;
+
+    public Range_Unanchored(float min, float max)
+    {
+        Min = min;
+        Max = max;
+        Difference = Max - Min;
+        RangeUnit = 1 / Difference;
+    }
+
+    public void InitializeRangeU()
+    {
+        Difference = Max - Min;
+        RangeUnit = 1 / Difference;
+    }
+
+
+    public float GetValueFromRatio(float ratio)
+    {
+        return Min + (Difference * ratio);
+    }
+}

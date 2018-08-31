@@ -640,7 +640,7 @@ GameObject:
   m_Layer: 9
   m_Name: Prefab_Zombie_Hurtboxed
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1495,6 +1495,7 @@ Transform:
   m_Children:
   - {fileID: 4375277622075386}
   - {fileID: 4131483106437258}
+  - {fileID: 4880035005531020}
   m_Father: {fileID: 4414203906426182}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1507,8 +1508,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4880035005531020}
+  m_Children: []
   m_Father: {fileID: 4696155517902126}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1854,12 +1854,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1572876814336364}
-  m_LocalRotation: {x: -0.7029836, y: -0.076249935, z: -0.076249935, w: 0.7029836}
-  m_LocalPosition: {x: 0.076, y: 0, z: 0.904}
-  m_LocalScale: {x: 0.05, y: 0.1, z: 0.05}
+  m_LocalRotation: {x: 0.5136109, y: -0.4864139, z: 0.48206872, w: 0.51692855}
+  m_LocalPosition: {x: 0.031350426, y: 0.0030332112, z: 0.00070005836}
+  m_LocalScale: {x: 0.050000027, y: 0.10000012, z: 0.050000064}
   m_Children: []
-  m_Father: {fileID: 4601769008021776}
-  m_RootOrder: 0
+  m_Father: {fileID: 4588052918992040}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: -12.3810005}
 --- !u!4 &4886960880056090
 Transform:
